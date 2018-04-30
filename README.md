@@ -8,7 +8,6 @@ Steps for local setup
 
 **``` ./server ```**
 
-Visit **localhost:3000**
 
 To test **/create** endpoint send a **``` POST ```** request with the following structure
 ```
