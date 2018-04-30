@@ -1,5 +1,3 @@
-golang-rest-api for todolist
-
 Steps for local setup
 
 **``` go get github.com/vedadeepta/todo-list-rest-api ```**
