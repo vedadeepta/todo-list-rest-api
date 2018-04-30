@@ -1,8 +1,8 @@
 golang-rest-api for todolist
 
-Run **``` go get github.com/vedadeepta/todo-list-rest-api ```**
+Steps for local setup
 
-To run in local:
+**``` go get github.com/vedadeepta/todo-list-rest-api ```**
 **``` cd $GOPATH/src/github.com/vedadeepta/todo-list-rest-api ```**
 **``` go build server.go ```**
 **``` ./server ```**
