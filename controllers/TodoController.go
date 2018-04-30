@@ -14,19 +14,22 @@ func CreateTodo(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&tempTodo)
 	if err != nil {
 		fmt.Printf("Invalid request")
+		utils.SendJson(w, http.StatusBadRequest, map[string]string {"error": "Invalid payload params"})
+		return
 	}
-	models.TodoSlice = append(models.TodoSlice ,tempTodo)	
-	w.WriteHeader(200)
-	response, _ := json.Marshal(tempTodo)
-	w.Write(response)
+	for _, todo := range models.TodoSlice {
+		if todo.ID == tempTodo.ID {
+			fmt.Printf("Same Id todo exists")
+			utils.SendJson(w, http.StatusBadRequest, map[string]string {"error": "Todo with same id exists"})
+			return
+		}
+ 	}
+	models.TodoSlice = append(models.TodoSlice ,tempTodo)
+	utils.SendJson(w, http.StatusOK, tempTodo)
 }
 
 func GetAllTodos(w http.ResponseWriter, r *http.Request) {
-	var allTodos = models.TodoSlice
-	response, _ := json.Marshal(allTodos)
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(200)
-	w.Write(response)
+	utils.SendJson(w, http.StatusOK, models.TodoSlice)
 }
 
 func GetTodo(w http.ResponseWriter, r *http.Request) {
@@ -38,11 +41,16 @@ func GetTodo(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 	}
-	utils.SendJson(w, 200, todo)
+	if todo.ID == "" {
+		utils.SendJson(w, http.StatusBadRequest, map[string]string {"error": "Todo not found"})
+		return
+	}
+	utils.SendJson(w, http.StatusOK, todo)
 }
 
 func UpdateTodo(w http.ResponseWriter, r *http.Request) {
 	var tempTodo models.Todo
+	flag := 0
 	err := json.NewDecoder(r.Body).Decode(&tempTodo)
 	if err != nil {
 		fmt.Printf("Invalid request")
@@ -50,19 +58,30 @@ func UpdateTodo(w http.ResponseWriter, r *http.Request) {
 	for i, todo := range models.TodoSlice {
 		if tempTodo.ID == todo.ID {
 			models.Update(&models.TodoSlice[i], tempTodo)
+			flag = 1
 			break
 		}
 	}
-	utils.SendJson(w, 200, map[string]string{"result": "ok"})
+	if flag == 0 {
+		utils.SendJson(w, http.StatusBadRequest, map[string]string {"error": "Todo not found"})
+		return
+	}
+	utils.SendJson(w, http.StatusOK, map[string]string{"result": "ok"})
 }
 
 func DeleteTodo(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
+	flag := 0
 	for i, todo := range models.TodoSlice {
 		if todo.ID == params["id"] {
 			models.TodoSlice = append(models.TodoSlice[ : i], models.TodoSlice[i+1 : ]...)
+			flag = 1
 			break
 		}
 	}
-	utils.SendJson(w, 200, map[string]string{"result": "ok"})
+	if flag == 0 {
+		utils.SendJson(w, http.StatusBadRequest, map[string]string {"error": "Todo not found"})
+		return		
+	}
+	utils.SendJson(w, http.StatusOK, map[string]string{"result": "ok"})
 }
