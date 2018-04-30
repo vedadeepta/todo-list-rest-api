@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"encoding/json"
 	"github.com/gorilla/mux"
-	"github.com/vedadeepta/go-rest-api/models"
-	"github.com/vedadeepta/go-rest-api/controllers/utils"
+	"github.com/vedadeepta/todo-list-rest-api/models"
+	"github.com/vedadeepta/todo-list-rest-api/controllers/utils"
 )
 
 func CreateTodo(w http.ResponseWriter, r *http.Request) {

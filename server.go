@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/vedadeepta/go-rest-api/routes"
+	"github.com/vedadeepta/todo-list-rest-api/routes"
 )
 
 func main() {

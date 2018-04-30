@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 	"github.com/gorilla/mux"
-	"github.com/vedadeepta/go-rest-api/controllers"
+	"github.com/vedadeepta/todo-list-rest-api/controllers"
 )
 
 func Init() {
