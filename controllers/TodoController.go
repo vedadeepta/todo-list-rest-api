@@ -55,3 +55,14 @@ func UpdateTodo(w http.ResponseWriter, r *http.Request) {
 	}
 	utils.SendJson(w, 200, map[string]string{"result": "ok"})
 }
+
+func DeleteTodo(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	for i, todo := range models.TodoSlice {
+		if todo.ID == params["id"] {
+			models.TodoSlice = append(models.TodoSlice[ : i], models.TodoSlice[i+1 : ]...)
+			break
+		}
+	}
+	utils.SendJson(w, 200, map[string]string{"result": "ok"})
+}
